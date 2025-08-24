@@ -1,13 +1,8 @@
-name: Terraform-Vagrant-Ansible
-
-on:
-  workflow_dispatch:
-
 jobs:
   deploy:
     runs-on: self-hosted
     steps:
-      - uses: actions/checkout@v3   # ✅ استنساخ المستودع تلقائيًا
+      - uses: actions/checkout@v3   # ✅ استنساخ المستودع
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
