@@ -27,8 +27,8 @@ jobs:
       - name: Save inventory file
         run: |
           echo "[ubuntu]" > inventory.ini
-          echo "192.168.56.10 ansible_user=vagrant ansible_ssh_private_key_file=~/.vagrant.d/insecure_private_key" >> inventory.ini
-        shell: bash
+          echo echo "192.168.56.10 ansible_user=vagrant ansible_ssh_private_key_file=$HOME/.vagrant.d/insecure_private_key" >> inventory.ini
+        shell: pwsh
 
       - name: Upload inventory artifact
         uses: actions/upload-artifact@v4   # ⬅️ هنا التغيير
