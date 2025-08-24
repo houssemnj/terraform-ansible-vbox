@@ -7,7 +7,7 @@ jobs:
   deploy:
     runs-on: self-hosted
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3   # ✅ استنساخ المستودع تلقائيًا
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
@@ -16,11 +16,9 @@ jobs:
 
       - name: Terraform Init & Apply
         run: |
-          cd terraform-ansible-vbox
           terraform init
           terraform apply -auto-approve
 
       - name: Run Ansible
         run: |
-          cd terraform-ansible-vbox
           ansible-playbook -i inventory.ini playbook.yml
