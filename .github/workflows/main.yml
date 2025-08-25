@@ -57,9 +57,9 @@ jobs:
       #     wsl sudo apt install -y ansible
       - name: Fix private key permissions
         run: |
-            sudo chmod 600 /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/.vagrant/machines/default/virtualbox/private_key
+            wsl chmod 600 ./.vagrant/machines/default/virtualbox/private_key
         shell: pwsh
-
+  
       - name: Run Playbook
         shell: pwsh
         run: |
