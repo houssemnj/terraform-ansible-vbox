@@ -96,7 +96,7 @@ jobs:
       - name: Fix private key permissions
         shell: pwsh
         run: |
-            wsl chmod 600 ./.vagrant/machines/default/virtualbox/private_key
+            icacls "./.vagrant/machines/default/virtualbox/private_key" /inheritance:r /grant:r "$($env:USERNAME):(R)"
   
 
       - name: Upload inventory artifact
