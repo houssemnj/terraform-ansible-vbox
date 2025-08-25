@@ -59,4 +59,5 @@ jobs:
       - name: Run Playbook
         shell: pwsh
         run: |
-          wsl ansible-playbook -i inventory.ini playbook.yml
+              wsl ansible-playbook -i /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/inventory.ini /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/playbook.yml
+
