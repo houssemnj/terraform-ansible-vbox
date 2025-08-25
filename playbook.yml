@@ -1,4 +1,4 @@
-- hosts: ubuntu-vms
+- hosts: ubuntu
   become: yes
   tasks:
     - name: Update apt cache
