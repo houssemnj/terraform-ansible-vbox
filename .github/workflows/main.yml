@@ -96,7 +96,7 @@ jobs:
       - name: Fix private key permissions
         shell: pwsh
         run: |
-            icacls "./.vagrant/machines/default/virtualbox/private_key" /inheritance:r /grant:r "$($env:USERNAME):(R)"
+             wsl chmod 600 /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/.vagrant/machines/default/virtualbox/private_key
   
 
       - name: Upload inventory artifact
@@ -129,7 +129,8 @@ jobs:
       #   shell: pwsh
   
       - name: Run Playbook
-        shell: pwsh
+        # shell: pwsh
         run: |
-              wsl ansible-playbook -i inventory.ini playbook.yml
+            wsl ansible-playbook -i /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/inventory.ini /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/playbook.yml
+              # wsl ansible-playbook -i inventory.ini playbook.yml
 
