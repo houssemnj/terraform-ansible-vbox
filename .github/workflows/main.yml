@@ -50,11 +50,11 @@ jobs:
         with:
           name: inventory
 
-      - name: Install Ansible
-        shell: pwsh
-        run: |
-          wsl sudo apt update
-          wsl sudo apt install -y ansible
+      # - name: Install Ansible
+      #   shell: pwsh
+      #   run: |
+      #     wsl sudo apt update
+      #     wsl sudo apt install -y ansible
 
       - name: Run Playbook
         shell: pwsh
