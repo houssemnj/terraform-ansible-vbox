@@ -51,10 +51,12 @@ jobs:
           name: inventory
 
       - name: Install Ansible
+        shell: pwsh
         run: |
-          sudo apt update
-          sudo apt install -y ansible
+          wsl sudo apt update
+          wsl sudo apt install -y ansible
 
       - name: Run Playbook
+        shell: pwsh
         run: |
-          ansible-playbook -i inventory.ini playbook.yml
+          wsl ansible-playbook -i inventory.ini playbook.yml
