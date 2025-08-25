@@ -15,7 +15,8 @@ provider "vagrant" {}
 resource "null_resource" "ubuntu_vm" {
   provisioner "local-exec" {
     command     = "vagrant up"
-    working_dir = "${path.module}"   # يعني نفس فولدر المشروع حيث يوجد Vagrantfile
+    working_dir = "C:/Users/HOUSSAM/Desktop/terraform-ansible-vbox"
+# working_dir = "${path.module}"   # يعني نفس فولدر المشروع حيث يوجد Vagrantfile
   }
 }
 
