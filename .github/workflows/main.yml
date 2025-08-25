@@ -93,10 +93,10 @@ jobs:
           echo "127.0.0.1 ansible_user=vagrant ansible_ssh_private_key_file=$HOME/.vagrant.d/insecure_private_key" >> inventory.ini
         shell: pwsh
 
-      - name: Fix private key permissions
-        shell: pwsh
-        run: |
-             wsl chmod 600 /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/.vagrant/machines/default/virtualbox/private_key
+      # - name: Fix private key permissions
+      #   shell: pwsh
+      #   run: |
+      #        wsl chmod 600 /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/.vagrant/machines/default/virtualbox/private_key
   
 
       - name: Upload inventory artifact
@@ -104,6 +104,11 @@ jobs:
         with:
           name: inventory
           path: inventory.ini
+
+      # - name: Fix private key permissions
+      #   shell: pwsh
+      #   run: |
+      #        wsl chmod 600 /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/.vagrant/machines/default/virtualbox/private_key    
 
   ansible:
     name: Run Ansible
@@ -123,13 +128,13 @@ jobs:
       #   run: |
       #     wsl sudo apt update
       #     wsl sudo apt install -y ansible
-      # - name: Fix private key permissions
-      #   run: |
-      #       wsl chmod 600 ./.vagrant/machines/default/virtualbox/private_key
-      #   shell: pwsh
+      - name: Fix private key permissions
+        shell: pwsh
+        run: |
+             wsl chmod 600 /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/.vagrant/machines/default/virtualbox/private_key 
   
       - name: Run Playbook
-        # shell: pwsh
+        shell: pwsh
         run: |
             wsl ansible-playbook -i /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/inventory.ini /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/playbook.yml
               # wsl ansible-playbook -i inventory.ini playbook.yml
