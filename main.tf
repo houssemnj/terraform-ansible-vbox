@@ -5,17 +5,20 @@ terraform {
       version = ">= 4.0.0"
     }
   }
+
+  required_version = ">= 1.5.0"
 }
 
 provider "vagrant" {}
 
-resource "vagrant_machine" "ubuntu" {
-  name = "ubuntu-vm"
-  box  = "ubuntu/focal64"
-  provider = "virtualbox"
-
-  network {
-    type = "private_network"
-    ip   = "192.168.56.10"
+# هذا الـ null_resource يشغل Vagrant مباشرة
+resource "null_resource" "ubuntu_vm" {
+  provisioner "local-exec" {
+    command     = "vagrant up"
+    working_dir = "${path.module}"   # يعني نفس فولدر المشروع حيث يوجد Vagrantfile
   }
+}
+
+output "vagrant_info" {
+  value = "VM Ubuntu سيتم إنشاؤها وتشغيلها على VirtualBox"
 }
