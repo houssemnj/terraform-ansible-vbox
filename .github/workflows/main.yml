@@ -20,10 +20,10 @@ jobs:
           terraform_version: 1.5.7
 
       - name: Terraform Init
-        run: terraform init
+        run: C:\Terraform\terraform.exe init
 
       - name: Terraform Apply (run Vagrant)
-        run: terraform apply -auto-approve
+        run: C:\Terraform\terraform.exe apply -auto-approve
 
       - name: Save inventory file
         run: |
