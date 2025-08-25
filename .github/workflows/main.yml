@@ -141,7 +141,7 @@ jobs:
       - name: Run Playbook
         shell: pwsh
         run: |
-            ansible-playbook -i /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/inventory.ini /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/playbook.yml -e 'ansible_ssh_common_args="-o StrictHostKeyChecking=no"'
+            wsl ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/inventory.ini /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/playbook.yml
 
             # wsl ansible-playbook -i /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/inventory.ini /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/playbook.yml
               # wsl ansible-playbook -i inventory.ini playbook.yml
