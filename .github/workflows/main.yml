@@ -12,7 +12,7 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - uses: actions/checkout@v3   # يسحب الريبو (main.tf + playbook.yml + Vagrantfile)
+      - uses: actions/checkout@v3
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
@@ -20,18 +20,20 @@ jobs:
           terraform_version: 1.5.7
 
       - name: Terraform Init
-        run: C:\Terraform\terraform.exe init
+        run: terraform init
 
       - name: Terraform Apply (run Vagrant)
-        run: C:\Terraform\terraform.exe apply -auto-approve
+        run: terraform apply -auto-approve
 
-      - name: Save inventory file
+      - name: Generate Ansible inventory
         run: |
           echo "[ubuntu]" > inventory.ini
-          echo "192.168.56.10 ansible_user=vagrant ansible_ssh_private_key_file=$HOME/.vagrant.d/insecure_private_key" >> inventory.ini
-        shell: pwsh
+          echo "127.0.0.1 ansible_port=2222 ansible_user=vagrant ansible_ssh_private_key_file=$(pwd)/.vagrant/machines/default/virtualbox/private_key" >> inventory.ini
 
-      - name: Upload inventory artifact
+      - name: Fix private key permissions
+        run: chmod 600 ./.vagrant/machines/default/virtualbox/private_key
+
+      - name: Upload inventory
         uses: actions/upload-artifact@v4
         with:
           name: inventory
@@ -50,18 +52,78 @@ jobs:
         with:
           name: inventory
 
-      # - name: Install Ansible
-      #   shell: pwsh
-      #   run: |
-      #     wsl sudo apt update
-      #     wsl sudo apt install -y ansible
-      - name: Fix private key permissions
+      - name: Install Ansible
         run: |
-            wsl chmod 600 ./.vagrant/machines/default/virtualbox/private_key
-        shell: pwsh
-  
+          sudo apt update
+          sudo apt install -y ansible
+
       - name: Run Playbook
-        shell: pwsh
-        run: |
-              wsl ansible-playbook -i inventory.ini playbook.yml
+        run: ansible-playbook -i inventory.ini playbook.yml
+
+# name: Terraform-Vagrant-Ansible
+
+# on:
+#   push:
+#     branches:
+#       - main
+#   workflow_dispatch:
+
+# jobs:
+#   terraform:
+#     name: Terraform & Vagrant
+#     runs-on: self-hosted
+
+#     steps:
+#       - uses: actions/checkout@v3   # يسحب الريبو (main.tf + playbook.yml + Vagrantfile)
+
+#       - name: Setup Terraform
+#         uses: hashicorp/setup-terraform@v2
+#         with:
+#           terraform_version: 1.5.7
+
+#       - name: Terraform Init
+#         run: C:\Terraform\terraform.exe init
+
+#       - name: Terraform Apply (run Vagrant)
+#         run: C:\Terraform\terraform.exe apply -auto-approve
+
+#       - name: Save inventory file
+#         run: |
+#           echo "[ubuntu]" > inventory.ini
+#           echo "192.168.56.10 ansible_user=vagrant ansible_ssh_private_key_file=$HOME/.vagrant.d/insecure_private_key" >> inventory.ini
+#         shell: pwsh
+
+#       - name: Upload inventory artifact
+#         uses: actions/upload-artifact@v4
+#         with:
+#           name: inventory
+#           path: inventory.ini
+
+#   ansible:
+#     name: Run Ansible
+#     runs-on: self-hosted
+#     needs: terraform
+
+#     steps:
+#       - uses: actions/checkout@v3
+
+#       - name: Download inventory
+#         uses: actions/download-artifact@v4
+#         with:
+#           name: inventory
+
+#       # - name: Install Ansible
+#       #   shell: pwsh
+#       #   run: |
+#       #     wsl sudo apt update
+#       #     wsl sudo apt install -y ansible
+#       - name: Fix private key permissions
+#         run: |
+#             wsl chmod 600 ./.vagrant/machines/default/virtualbox/private_key
+#         shell: pwsh
+  
+#       - name: Run Playbook
+#         shell: pwsh
+#         run: |
+#               wsl ansible-playbook -i inventory.ini playbook.yml
 
