@@ -39,7 +39,7 @@ jobs:
 
   ansible:
     name: Run Ansible
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: terraform
 
     steps:
