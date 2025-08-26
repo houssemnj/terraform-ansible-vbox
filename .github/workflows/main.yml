@@ -133,16 +133,19 @@ jobs:
       - name: Fix private key permissions
         shell: pwsh
         run: |
+             wsl --user root
              wsl chmod 600 /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/.vagrant/machines/default/virtualbox/private_key 
              
       - name: remove the old key li ken ma5doum ken project 9able ken ye5dem
         shell: pwsh
         run: |
+            wsl --user root
             wsl ssh-keygen -f "/home/houssam/.ssh/known_hosts" -R "[127.0.0.1]:2222"
   
       - name: Run Playbook
         shell: pwsh
         run: |
+            wsl --user root
             wsl ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/inventory.ini /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/playbook.yml
 
             # wsl ansible-playbook -i /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/inventory.ini /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/playbook.yml
