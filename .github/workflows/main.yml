@@ -140,7 +140,7 @@ jobs:
         shell: pwsh
         run: |
             wsl --user root
-            wsl ssh-keygen -f "/home/houssam/.ssh/known_hosts" -R "[127.0.0.1]:2222"
+            wsl ssh-keygen -f "/root/.ssh/known_hosts" -R "[127.0.0.1]:2222"
   
       - name: Run Playbook
         shell: pwsh
