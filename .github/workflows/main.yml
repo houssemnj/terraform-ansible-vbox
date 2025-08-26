@@ -133,17 +133,17 @@ jobs:
       - name: Fix private key permissions
         shell: pwsh
         run: |
-             wsl --user root ; chmod 600 /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/.vagrant/machines/default/virtualbox/private_key 
+             wsl --user root chmod 600 /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/.vagrant/machines/default/virtualbox/private_key 
              
       - name: remove the old key li ken ma5doum ken project 9able ken ye5dem
         shell: pwsh
         run: |
-            wsl --user root ; ssh-keygen -f "/root/.ssh/known_hosts" -R "[127.0.0.1]:2222"
+            wsl --user root ssh-keygen -f "/root/.ssh/known_hosts" -R "[127.0.0.1]:2222"
   
       - name: Run Playbook
         shell: pwsh
         run: |
-            wsl --user root ; ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/inventory.ini /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/playbook.yml
+            wsl --user root ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/inventory.ini /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/playbook.yml
 
             # wsl ansible-playbook -i /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/inventory.ini /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/playbook.yml
               # wsl ansible-playbook -i inventory.ini playbook.yml
