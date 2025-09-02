@@ -70,10 +70,11 @@ jobs:
        
         
 
-      - name: Remove old SSH host key
+      - name: Remove old SSH host key (root + houssam)
         shell: pwsh
         run: |
-            wsl --user root ssh-keygen -f "/root/.ssh/known_hosts" -R "[127.0.0.1]:2222"
+            wsl --user root ssh-keygen -f "/root/.ssh/known_hosts" -R "[127.0.0.1]:2222" || true
+            wsl bash -c "ssh-keygen -f '/home/houssam/.ssh/known_hosts' -R '[127.0.0.1]:2222'" || true
         
 
     # 👇 NEW: Setup venv and install Ansible + k8s SDK
