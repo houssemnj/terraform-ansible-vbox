@@ -88,5 +88,5 @@ jobs:
       - name: Run Ansible Playbook
         shell: pwsh
         run: |
-          wsl bash -c "source ~/ansible-env/bin/activate && ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/inventory.ini /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/playbook.yml"
+          wsl bash -c "source ~/ansible-env/bin/activate && echo '⏳ Waiting 20 seconds...' && sleep 20 && ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/inventory.ini /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/playbook.yml"
         
