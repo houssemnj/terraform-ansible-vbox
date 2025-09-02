@@ -62,11 +62,12 @@ jobs:
         with:
           name: inventory
 
-      - name: Fix SSH key permissions in WSL
-        shell: pwsh
+      - name: Prepare SSH key
         run: |
-         
-          wsl --user root chmod 600 /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/.vagrant/machines/default/virtualbox/private_key
+            mkdir -p ~/.ssh
+            cp /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/.vagrant/machines/default/virtualbox/private_key ~/.ssh/vagrant_key
+            chmod 600 ~/.ssh/vagrant_key
+
        
         
 
