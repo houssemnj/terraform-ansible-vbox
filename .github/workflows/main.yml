@@ -28,10 +28,13 @@ jobs:
       - name: Terraform Apply (run Vagrant)
         run: C:\Terraform\terraform.exe apply -auto-approve
 
-      - name: Save inventory file
+        env:
+         ROJECT_PATH: /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox
+
+      - name: Generate inventory.ini
         run: |
-          echo "[ubuntu]" > inventory.ini
-          echo "127.0.0.1 ansible_user=vagrant ansible_ssh_private_key_file=$HOME/.vagrant.d/insecure_private_key ansible_ssh_extra_args='-o StrictHostKeyChecking=no'" >> inventory.ini
+           echo "[ubuntu]" > inventory.ini
+           echo "192.168.56.10 ansible_user=vagrant ansible_port=22 ansible_ssh_private_key_file=${{ env.PROJECT_PATH }}/.vagrant/machines/default/virtualbox/private_key ansible_ssh_extra_args='-o StrictHostKeyChecking=no'" >> inventory.ini
         shell: pwsh
 
 
@@ -82,7 +85,7 @@ jobs:
 
          echo "✅ Ansible environment ready"
          EOF
-       shell: pwsh
+       shell: bash
 
     # 👇 Run playbook INSIDE the venv
      - name: Run Ansible Playbook
@@ -93,4 +96,4 @@ jobs:
            -i /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/inventory.ini \
            /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/playbook.yml
          EOF
-       shell: pwsh
+       shell: bash
