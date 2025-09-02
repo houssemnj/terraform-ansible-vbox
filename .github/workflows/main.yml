@@ -1,64 +1,3 @@
-# name: Terraform-Vagrant-Ansible
-
-# on:
-#   push:
-#     branches:
-#       - main
-#   workflow_dispatch:
-
-# jobs:
-#   terraform:
-#     name: Terraform & Vagrant
-#     runs-on: self-hosted
-
-#     steps:
-#       - uses: actions/checkout@v3
-
-#       - name: Setup Terraform
-#         uses: hashicorp/setup-terraform@v2
-#         with:
-#           terraform_version: 1.5.7
-
-#       - name: Terraform Init
-#         run: terraform init
-
-#       - name: Terraform Apply (run Vagrant)
-#         run: terraform apply -auto-approve
-
-#       - name: Generate Ansible inventory
-#         run: |
-#           echo "[ubuntu]" > inventory.ini
-#           echo "127.0.0.1 ansible_port=2222 ansible_user=vagrant ansible_ssh_private_key_file=$(pwd)/.vagrant/machines/default/virtualbox/private_key" >> inventory.ini
-
-#       - name: Fix private key permissions
-#         run: chmod 600 ./.vagrant/machines/default/virtualbox/private_key
-
-#       - name: Upload inventory
-#         uses: actions/upload-artifact@v4
-#         with:
-#           name: inventory
-#           path: inventory.ini
-
-#   ansible:
-#     name: Run Ansible
-#     runs-on: self-hosted
-#     needs: terraform
-
-#     steps:
-#       - uses: actions/checkout@v3
-
-#       - name: Download inventory
-#         uses: actions/download-artifact@v4
-#         with:
-#           name: inventory
-
-#       - name: Install Ansible
-#         run: |
-#           sudo apt update
-#           sudo apt install -y ansible
-
-#       - name: Run Playbook
-#         run: ansible-playbook -i inventory.ini playbook.yml
 
 name: Terraform-Vagrant-Ansible
 
@@ -95,10 +34,7 @@ jobs:
           echo "127.0.0.1 ansible_user=vagrant ansible_ssh_private_key_file=$HOME/.vagrant.d/insecure_private_key ansible_ssh_extra_args='-o StrictHostKeyChecking=no'" >> inventory.ini
         shell: pwsh
 
-      # - name: Fix private key permissions
-      #   shell: pwsh
-      #   run: |
-      #        wsl chmod 600 /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/.vagrant/machines/default/virtualbox/private_key
+
   
 
       - name: Upload inventory artifact
@@ -107,44 +43,53 @@ jobs:
           name: inventory
           path: inventory.ini
 
-      # - name: Fix private key permissions
-      #   shell: pwsh
-      #   run: |
-      #        wsl chmod 600 /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/.vagrant/machines/default/virtualbox/private_key    
+    
 
   ansible:
-    name: Run Ansible
-    runs-on: self-hosted
-    needs: terraform
+   name: Configure K8s & Deploy Nginx
+   needs: terraform
+   runs-on: self-hosted
+   steps:
+     - uses: actions/checkout@v3
 
-    steps:
-      - uses: actions/checkout@v3
+     - name: Download inventory
+       uses: actions/download-artifact@v4
+       with:
+         name: inventory
 
-      - name: Download inventory
-        uses: actions/download-artifact@v4
-        with:
-          name: inventory
+     - name: Fix SSH key permissions in WSL
+       run: |
+         wsl --user root chmod 600 ~/.vagrant.d/insecure_private_key
+         wsl --user root chown $(id -u):$(id -g) ~/.vagrant.d/insecure_private_key
+       shell: pwsh
 
-      # - name: Install Ansible
-      #   shell: pwsh
-      #   run: |
-      #     wsl sudo apt update
-      #     wsl sudo apt install -y ansible
-      - name: Fix private key permissions
-        shell: pwsh
-        run: |
-             wsl --user root chmod 600 /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/.vagrant/machines/default/virtualbox/private_key 
-             
-      - name: remove the old key li ken ma5doum ken project 9able ken ye5dem
-        shell: pwsh
-        run: |
-            wsl --user root ssh-keygen -f "/root/.ssh/known_hosts" -R "[127.0.0.1]:2222"
-  
-      - name: Run Playbook
-        shell: pwsh
-        run: |
-            wsl --user root ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/inventory.ini /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/playbook.yml
+     - name: Remove old SSH host key
+       run: |
+         wsl --user root ssh-keygen -f "/root/.ssh/known_hosts" -R "192.168.56.10"
+       shell: pwsh
 
-            # wsl ansible-playbook -i /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/inventory.ini /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/playbook.yml
-              # wsl ansible-playbook -i inventory.ini playbook.yml
+    # 👇 NEW: Setup venv and install Ansible + k8s SDK
+     - name: Setup Ansible Virtual Environment
+       run: |
+         wsl << 'EOF'
+         # Create or recreate venv
+         rm -rf ~/ansible-env
+         python3 -m venv ~/ansible-env
+         source ~/ansible-env/bin/activate
+         pip install --upgrade pip
+         pip install ansible kubernetes
 
+         echo "✅ Ansible environment ready"
+         EOF
+       shell: pwsh
+
+    # 👇 Run playbook INSIDE the venv
+     - name: Run Ansible Playbook
+       run: |
+         wsl << 'EOF'
+         source ~/ansible-env/bin/activate
+         ansible-playbook \
+           -i /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/inventory.ini \
+           /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/playbook.yml
+         EOF
+       shell: pwsh
