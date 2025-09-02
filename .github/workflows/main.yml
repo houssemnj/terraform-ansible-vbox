@@ -59,9 +59,9 @@ jobs:
 
      - name: Fix SSH key permissions in WSL
        run: |
-          wsl --user root chmod 600 ~/.vagrant.d/insecure_private_key
-       # wsl --user root chmod 600 /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/.vagrant/machines/default/virtualbox/private_key
-       # wsl --user root chown $(id -u):$(id -g) ~/.vagrant.d/insecure_private_key
+         
+         wsl --user root chmod 600 /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/.vagrant/machines/default/virtualbox/private_key
+       
        shell: pwsh
 
      - name: Remove old SSH host key
