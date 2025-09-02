@@ -94,4 +94,4 @@ jobs:
          -i "/mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/inventory.ini" \
          "/mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/playbook.yml"
          '
-       shell: bash
+       shell: pwsh
