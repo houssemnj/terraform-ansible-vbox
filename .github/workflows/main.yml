@@ -75,25 +75,23 @@ jobs:
     # 👇 NEW: Setup venv and install Ansible + k8s SDK
      - name: Setup Ansible Virtual Environment
        run: |
-         wsl << 'EOF'
-         # Create or recreate venv
-         rm -rf ~/ansible-env
-         python3 -m venv ~/ansible-env
-         source ~/ansible-env/bin/activate
-         pip install --upgrade pip
-         pip install ansible kubernetes
-
-         echo "✅ Ansible environment ready"
-         EOF
-       shell: bash
+          wsl bash -c '
+          rm -rf ~/ansible-env
+          python3 -m venv ~/ansible-env
+          source ~/ansible-env/bin/activate
+          pip install --upgrade pip
+          pip install ansible kubernetes
+          echo "✅ Ansible environment ready"
+          '
+       shell: pwsh
 
     # 👇 Run playbook INSIDE the venv
      - name: Run Ansible Playbook
        run: |
-         wsl << 'EOF'
+         wsl bash -c '
          source ~/ansible-env/bin/activate
          ansible-playbook \
-           -i /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/inventory.ini \
-           /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/playbook.yml
-         EOF
+         -i "/mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/inventory.ini" \
+         "/mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/playbook.yml"
+         '
        shell: bash
