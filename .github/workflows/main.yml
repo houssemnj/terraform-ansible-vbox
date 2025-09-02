@@ -80,12 +80,12 @@ jobs:
       - name: Setup Ansible Virtual Environment
         shell: pwsh
         run: |
-          wsl bash -c "python3 -m venv ~/ansible-env && source ~/ansible-env/bin/activate && pip install --upgrade pip ansible kubernetes && echo '✅ Done'"
+           wsl bash -c "python3 -m venv ~/ansible-env && source ~/ansible-env/bin/activate && pip install --upgrade pip ansible kubernetes"
          
 
     # 👇 Run playbook INSIDE the venv
       - name: Run Ansible Playbook
         shell: pwsh
         run: |
-           wsl bash -c "python3 -m venv ~/ansible-env && source ~/ansible-env/bin/activate  && ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/inventory.ini /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/playbook.yml"
+          wsl bash -c "source ~/ansible-env/bin/activate && ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/inventory.ini /mnt/c/Users/HOUSSAM/Desktop/terraform-ansible-vbox/playbook.yml"
         
