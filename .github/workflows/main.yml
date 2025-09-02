@@ -56,8 +56,8 @@ jobs:
       - name: Checkout Code with LF Line Endings
         uses: actions/checkout@v3
         with:
-          cri
-
+            cri:  'lf'
+ 
       - name: Download inventory
         uses: actions/download-artifact@v4
         with:
