@@ -73,7 +73,7 @@ jobs:
       - name: Remove old SSH host key
         shell: pwsh
         run: |
-            wsl --user root ssh-keygen -f "/root/.ssh/known_hosts" -R "192.168.56.10"
+            wsl --user root ssh-keygen -f "/root/.ssh/known_hosts" -R "192.168.56.10:2222"
         
 
     # 👇 NEW: Setup venv and install Ansible + k8s SDK
